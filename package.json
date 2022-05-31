@@ -1,0 +1,56 @@
+{
+	"name": "@liquicode/lib-managed-storage",
+	"version": "0.0.1",
+	"description": "A storage engine for managed objects. Tracks object identity, ownership, and permissions.",
+	"homepage": "http://lib-managed-storage.liquicode.com",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/liquicode/lib-managed-storage"
+	},
+	"authors": [
+		{
+			"name": "Andre' G. Bowlin",
+			"email": "agbowlin@gmail.com",
+			"homepage": "http://liquicode.com"
+		}
+	],
+	"main": "src/template-lib.js",
+	"files": [
+		"readme.md",
+		"license.md",
+		"VERSION",
+		"dist/*",
+		"docs/*",
+		"src/*",
+		"tests/*"
+	],
+	"ignore": [
+		".*",
+		"~*",
+		"bower_components",
+		"node_modules",
+		"build"
+	],
+	"keywords": [
+		"javascript",
+		"js",
+		"nodejs",
+		"node"
+	],
+	"dependencies": {},
+	"devDependencies": {
+		"@vivaxy/here": "^3.4.1",
+		"mocha": "^8.3.0",
+		"webpack": "^5.24.3",
+		"webpack-cli": "^4.5.0",
+		"webpack-node-externals": "^2.5.2"
+	},
+	"scripts": {
+		"run-tests": "mocha -u bdd tests/*.js --timeout 0 --slow 10 --colors",
+		"run-docs-web-server": "npx here --directory docs --port 4200 --watch 1 --silent",
+		"010-webpack": "bash build/webpack/010-webpack.sh",
+		"810-s3-sync-docs": "bash build/s3/810-s3-sync-docs.sh",
+		"910-release-version": "node build/custom/910-release-version.js"
+	}
+}
