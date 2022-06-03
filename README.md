@@ -43,6 +43,8 @@ Supports core (managed) functions for serialization and manipulation:
 - Discovery Functions
 	- ListAll		( User )
 	- ListMine		( User )
+	- CountAll		( User, Criteria )
+	- CountMine		( User, Criteria )
 	- FindOne		( User, Criteria )
 	- FindMany		( User, Criteria )
 	<!--
@@ -66,6 +68,28 @@ Supports core (managed) functions for serialization and manipulation:
 - These functions return an array of objects: ListAll, ListMine, and FindMany.
 - These functions return a true/false status: WriteOne, DeleteOne, DeleteMine, and DeleteAll.
 - The storage provider implements the inner details of these functions.
+- The `Criteria` parameter can be omitted, be `null`, or be an empty object `{}`.
+	In such cases, these functions will exhibit special behavior:
+	- `CountAll` will count all objects.
+	- `CountMine` will count all objects belonging to the user.
+	- `FindOne` will find the first (random) object belonging to the user.
+	- `FindMany` will find all objects belonging to the user.
+
+
+Storage Providers
+---------------------------------------------------------------------
+A storage provider connects an application to a single collection of objects.
+
+- MongoProvider
+	- Stores objects in a MongoDB database.
+
+- JsonProvider
+	- Stores objects locally in memory.
+	- Configuration options exist to read the contents of the collection from a disk file.
+	- Configuration options exist to flush the contents of the collection back to the same disk file.
+	- When using `flush_every_ms`  configuration option,
+		take care to explicitly call the `Flush()` function as the application is shutting down.
+		Failure to do so will likely result in the disk file being inaccurate.
 
 
 Object Creation and Design
@@ -91,7 +115,7 @@ Application Customization
 ---------------------------------------------------------------------
 Exposes three key data structures to other areas of the server:
 - `Configuration`: The configuration block used for database or service connections.
-	- Used by `App` during initialization.
+	- Used by application during initialization.
 - `ObjectDefinition`: The definition of the managed object including UI hints and field definitions.
 	- This is intended to be set by the implemented service.
 - `Authorization`: Role based access controls for managed functions.
@@ -106,3 +130,4 @@ Exposes managed functions via web services with the `StorageService` function.
 Miscellaneous Notices
 ---------------------------------------------------------------------
 - Source code ASCII art banners generated using [https://patorjk.com/software/taag](https://patorjk.com/software/taag/#p=display&f=Univers) with the "Univers" font.
+
