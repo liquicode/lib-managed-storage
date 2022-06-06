@@ -15,7 +15,7 @@
 			"homepage": "http://liquicode.com"
 		}
 	],
-	"main": "src/template-lib.js",
+	"main": "src/lib-managed-storage.js",
 	"files": [
 		"readme.md",
 		"license.md",
@@ -39,13 +39,10 @@
 		"node"
 	],
 	"dependencies": {
-		"async": "^3.2.3",
 		"babel-polyfill": "^6.26.0",
-		"fs-extra": "^10.1.0",
 		"json-criteria": "^2.6.0",
 		"lockfile": "^1.0.4",
 		"mongodb": "^4.6.0",
-		"underscore": "^1.13.3",
 		"uuid": "^8.3.2"
 	},
 	"devDependencies": {

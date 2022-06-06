@@ -296,6 +296,7 @@ describe( `020) ManagedStorage Tests`,
 					async function ()
 					{
 						await _RebuildTestEnvironment();
+						
 						// Bob can read, but not update, the document 'Secret Document'.
 						{
 							let original_doc = await storage.FindOne( Alice, { name: 'Secret Document' } );

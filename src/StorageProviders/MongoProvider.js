@@ -141,6 +141,7 @@ exports.NewMongoDbProvider =
 						let db_response = await Collection.insertOne( DataObject );
 						if ( !db_response.acknowledged ) { throw new Error( `Database did not acknowledge insertion.` ); }
 						let new_data_object = LIB_UTILITY.clone( DataObject );
+						new_data_object._id = DataObject._id; // Because clone creates a string version of the id.
 						return new_data_object;
 					} );
 			};
