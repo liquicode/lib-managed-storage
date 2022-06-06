@@ -40,7 +40,7 @@ describe( `020) ManagedStorage Tests`,
 					}
 				};
 
-				// Get the storage provider.
+				// Get the managed storage.
 				let storage = LIB_MANAGED_STORAGE.NewManagedStorage( managed_config );
 
 

@@ -2,16 +2,31 @@
 
 <hr>
 
-- template-lib Docs
+- lib-managed-storage Docs
 
 	- [About](external/readme.md)
-	- [Library Guide](guides/guide.md)
+	
+	- [Managed Object](guides/ManagedObject.md)
+	- [Managed Storage](guides/ManagedStorage.md)
+	- [Storage Providers](guides/StorageProviders.md)
 
+	- [Configuration](guides/Configuration.md)
+
+
+<hr>
+
+- Examples
+
+	- [Object Sharing](examples/Object-Sharing-Example.md)
+
+
+<!-- 
 <hr>
 
 - API
 
 	- [Library API](api/api.md)
+-->
 
 <hr>
 
