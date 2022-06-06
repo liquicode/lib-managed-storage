@@ -20,7 +20,7 @@ describe( `011.1) JsonProvider (no-flush) Tests`,
 		//---------------------------------------------------------------------
 		let session_id = '';
 		let test_object_count = 0;
-		let storage_config = null;
+		let provider_config = null;
 		let storage_filename = '';
 		let storage_provider = null;
 
@@ -32,19 +32,19 @@ describe( `011.1) JsonProvider (no-flush) Tests`,
 				// Configure the test environment.
 				session_id = LIB_UUID.v4();
 				test_object_count = 1000;
-				storage_config = {
+				provider_config = {
 					collection_name: 'test-objects',
 					database_name: LIB_PATH.join( __dirname, '~temp' ),
 					flush_on_update: false,
 					flush_every_ms: 0,
 				};
 				// Reset the test environment.
-				if ( !LIB_FS.existsSync( storage_config.database_name ) ) { LIB_FS.mkdirSync( storage_config.database_name ); }
-				storage_filename = LIB_PATH.join( storage_config.database_name, storage_config.collection_name );
+				if ( !LIB_FS.existsSync( provider_config.database_name ) ) { LIB_FS.mkdirSync( provider_config.database_name ); }
+				storage_filename = LIB_PATH.join( provider_config.database_name, provider_config.collection_name );
 				if ( !storage_filename.toLowerCase().endsWith( '.json' ) ) { storage_filename += '.json'; }
 				if ( LIB_FS.existsSync( storage_filename ) ) { LIB_FS.unlinkSync( storage_filename ); }
 				// Get the storage provider.
-				storage_provider = LIB_JSON_PROVIDER.NewJsonProvider( storage_config );
+				storage_provider = LIB_JSON_PROVIDER.NewJsonProvider( provider_config );
 			} );
 
 

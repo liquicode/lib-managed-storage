@@ -19,9 +19,9 @@ describe( `010) MongoProvider Tests`,
 
 		//---------------------------------------------------------------------
 		let filename = LIB_PATH.join( __dirname, '../build/__secrets/test-mongodb-config.json' );
-		let config = JSON.parse( LIB_FS.readFileSync( filename, 'utf8' ) );
-		config.enabled = true;
-		let storage_provider = LIB_MONGO_PROVIDER.NewMongoDbProvider( config );
+		let provider_config = JSON.parse( LIB_FS.readFileSync( filename, 'utf8' ) );
+		provider_config.enabled = true;
+		let storage_provider = LIB_MONGO_PROVIDER.NewMongoDbProvider( provider_config );
 
 
 		//---------------------------------------------------------------------

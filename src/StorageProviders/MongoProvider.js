@@ -140,7 +140,8 @@ exports.NewMongoDbProvider =
 						// insertOne will modify DataObject by adding the _id field to it.
 						let db_response = await Collection.insertOne( DataObject );
 						if ( !db_response.acknowledged ) { throw new Error( `Database did not acknowledge insertion.` ); }
-						return DataObject;
+						let new_data_object = LIB_UTILITY.clone( DataObject );
+						return new_data_object;
 					} );
 			};
 

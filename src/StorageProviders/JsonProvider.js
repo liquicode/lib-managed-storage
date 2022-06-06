@@ -12,13 +12,13 @@ const LIB_UUID = require( 'uuid' );
 const LIB_LOCKFILE = require( 'lockfile' );
 
 //---------------------------------------------------------------------
-const LIB_UTILITY = require( '../lib-utils.js' );
+const LIB_UTILS = require( '../lib-utils.js' );
 const { stringify } = require( 'querystring' );
 
 
 //---------------------------------------------------------------------
 exports.NewJsonProvider =
-	function NewJsonProvider( Configuration )
+	function NewJsonProvider( Configuration = {} )
 	{
 		let Self = this;
 
@@ -28,24 +28,36 @@ exports.NewJsonProvider =
 		let storage_filename = '';
 		let storage_dirty = false;
 
-		// Load the collection.
-		Configuration.database_name = LIB_PATH.resolve( Configuration.database_name );
-		storage_filename = LIB_PATH.join( Configuration.database_name, Configuration.collection_name );
-		if ( !storage_filename.toLowerCase().endsWith( '.json' ) ) { storage_filename += '.json'; }
-		if ( LIB_FS.existsSync( storage_filename ) )
+		// Apply the configuration.
+		if ( !LIB_UTILS.value_missing_null_empty( Configuration.database_name ) &&
+			!LIB_UTILS.value_missing_null_empty( Configuration.collection_name ) )
 		{
-			storage_objects = JSON.parse( LIB_FS.readFileSync( storage_filename, 'utf8' ) );
-			if ( !Array.isArray( storage_objects ) )
-			{
-				storage_objects = [ storage_objects ]; // Coerce storage_objects to an array.
-			}
-		}
 
-		// Setup the auto-flush.
-		if ( Configuration.flush_every_ms && ( Configuration.flush_every_ms > 0 ) )
-		{
-			let timeout = setInterval( () => _Flush(), Configuration.flush_every_ms );
-			timeout.unref(); // Prevent this interval from keeping the process running after the main loop ends.
+			// Load the collection.
+			Configuration.database_name = LIB_PATH.resolve( Configuration.database_name );
+			if ( !LIB_FS.existsSync( Configuration.database_name ) ) { LIB_FS.mkdirSync( Configuration.database_name, { recursive: true } ); }
+			storage_filename = LIB_PATH.join( Configuration.database_name, Configuration.collection_name );
+			if ( !storage_filename.toLowerCase().endsWith( '.json' ) ) { storage_filename += '.json'; }
+			if ( Configuration.clear_collection_on_start )
+			{
+				if ( LIB_FS.existsSync( storage_filename ) ) { LIB_FS.unlinkSync( storage_filename ); }
+			}
+			if ( LIB_FS.existsSync( storage_filename ) )
+			{
+				storage_objects = JSON.parse( LIB_FS.readFileSync( storage_filename, 'utf8' ) );
+				if ( !Array.isArray( storage_objects ) )
+				{
+					storage_objects = [ storage_objects ]; // Coerce single object to an array.
+				}
+			}
+
+			// Setup the auto-flush.
+			if ( Configuration.flush_every_ms && ( Configuration.flush_every_ms > 0 ) )
+			{
+				let timeout = setInterval( () => _Flush(), Configuration.flush_every_ms );
+				timeout.unref(); // Prevent this interval from keeping the process running after the main loop ends.
+			}
+
 		}
 
 
@@ -112,13 +124,13 @@ exports.NewJsonProvider =
 						try
 						{
 							let object_count = 0;
-							if ( LIB_UTILITY.value_missing_null_empty( Criteria ) )
+							if ( LIB_UTILS.value_missing_null_empty( Criteria ) )
 							{
 								object_count = storage_objects.length;
 							}
 							else
 							{
-								for ( let object_index = storage_objects.length - 1; object_index >= 0; object_index-- )
+								for ( let object_index = 0; object_index < storage_objects.length; object_index++ )
 								{
 									let test_object = storage_objects[ object_index ];
 									if ( LIB_JSON_CRITERIA.test( test_object, Criteria ) )
@@ -152,11 +164,11 @@ exports.NewJsonProvider =
 						try
 						{
 							let object = null;
-							if ( LIB_UTILITY.value_missing_null_empty( Criteria ) )
+							if ( LIB_UTILS.value_missing_null_empty( Criteria ) )
 							{
 								if ( storage_objects.length > 0 )
 								{
-									object = LIB_UTILITY.clone( storage_objects[ 0 ] );
+									object = LIB_UTILS.clone( storage_objects[ 0 ] );
 								}
 							}
 							else
@@ -166,8 +178,8 @@ exports.NewJsonProvider =
 									let test_object = storage_objects[ object_index ];
 									if ( LIB_JSON_CRITERIA.test( test_object, Criteria ) )
 									{
-										object = LIB_UTILITY.clone( test_object );
-										break;;
+										object = LIB_UTILS.clone( test_object );
+										break;
 									}
 								}
 							}
@@ -199,13 +211,13 @@ exports.NewJsonProvider =
 							for ( let object_index = 0; object_index < storage_objects.length; object_index++ )
 							{
 								let test_object = storage_objects[ object_index ];
-								if ( LIB_UTILITY.value_missing_null_empty( Criteria ) )
+								if ( LIB_UTILS.value_missing_null_empty( Criteria ) )
 								{
-									found_objects.push( LIB_UTILITY.clone( test_object ) );
+									found_objects.push( LIB_UTILS.clone( test_object ) );
 								}
 								else if ( LIB_JSON_CRITERIA.test( test_object, Criteria ) )
 								{
-									found_objects.push( LIB_UTILITY.clone( test_object ) );
+									found_objects.push( LIB_UTILS.clone( test_object ) );
 								}
 							}
 							resolve( found_objects );
@@ -234,11 +246,11 @@ exports.NewJsonProvider =
 						{
 							// insert will modify DataObject by setting the _id field.
 							DataObject._id = LIB_UUID.v4();
-							let new_data_object = LIB_UTILITY.clone( DataObject );
+							let new_data_object = LIB_UTILS.clone( DataObject );
 							storage_objects.push( new_data_object );
 							storage_dirty = true;
 							if ( Configuration.flush_on_update ) { await _Flush(); }
-							resolve( new_data_object );
+							resolve( LIB_UTILS.clone( new_data_object ) );
 						}
 						catch ( error )
 						{
@@ -262,8 +274,12 @@ exports.NewJsonProvider =
 					{
 						try
 						{
-							if ( LIB_UTILITY.value_missing_null_empty( Criteria ) )
+							if ( LIB_UTILS.value_missing_null_empty( Criteria ) )
 							{
+								if ( LIB_UTILS.value_missing_null_empty( DataObject._id ) )
+								{
+									throw new Error( `You must supply either [Criteria] or [DataObject._id] in the parameters.` );
+								}
 								Criteria = { _id: DataObject._id };
 							}
 							for ( let object_index = 0; object_index < storage_objects.length; object_index++ )
@@ -271,7 +287,7 @@ exports.NewJsonProvider =
 								let test_object = storage_objects[ object_index ];
 								if ( LIB_JSON_CRITERIA.test( test_object, Criteria ) )
 								{
-									storage_objects[ object_index ] = LIB_UTILITY.merge_objects( test_object, DataObject );
+									storage_objects[ object_index ] = LIB_UTILS.merge_objects( test_object, DataObject );
 									storage_dirty = true;
 									if ( Configuration.flush_on_update ) { await _Flush(); }
 									resolve( 1 );
@@ -303,7 +319,7 @@ exports.NewJsonProvider =
 						try
 						{
 							let deleted_count = 0;
-							if ( LIB_UTILITY.value_missing_null_empty( Criteria ) )
+							if ( LIB_UTILS.value_missing_null_empty( Criteria ) )
 							{
 								if ( storage_objects.length > 0 )
 								{
@@ -354,7 +370,7 @@ exports.NewJsonProvider =
 						try
 						{
 							let deleted_count = 0;
-							if ( LIB_UTILITY.value_missing_null_empty( Criteria ) )
+							if ( LIB_UTILS.value_missing_null_empty( Criteria ) )
 							{
 								deleted_count = storage_objects.length;
 								storage_objects = [];

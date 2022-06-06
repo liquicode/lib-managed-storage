@@ -21,6 +21,15 @@ function value_missing_null_empty( Value )
 
 
 //---------------------------------------------------------------------
+function value_missing( Value )
+{
+	if ( Value === null ) { return true; }
+	if ( typeof Value === 'undefined' ) { return true; }
+	return false;
+};
+
+
+//---------------------------------------------------------------------
 function value_exists( Value )
 {
 	return !value_missing_null_empty( Value );
@@ -28,9 +37,23 @@ function value_exists( Value )
 
 
 //---------------------------------------------------------------------
-function missing_parameter_error( Name )
+function MISSING_PARAMETER_ERROR( Name )
 {
 	return new Error( `Required parameter is missing: ${Name}` );
+};
+
+
+//---------------------------------------------------------------------
+function READ_ACCESS_ERROR()
+{
+	return new Error( `User does not have read access to this object or the object does not exist.` );
+};
+
+
+//---------------------------------------------------------------------
+function WRITE_ACCESS_ERROR()
+{
+	return new Error( `User does not have write access to this object.` );
 };
 
 
@@ -87,8 +110,12 @@ function zulu_timestamp()
 //---------------------------------------------------------------------
 
 exports.value_missing_null_empty = value_missing_null_empty;
+exports.value_missing = value_missing;
 exports.value_exists = value_exists;
-exports.missing_parameter_error = missing_parameter_error;
+
+exports.MISSING_PARAMETER_ERROR = MISSING_PARAMETER_ERROR;
+exports.READ_ACCESS_ERROR = READ_ACCESS_ERROR;
+exports.WRITE_ACCESS_ERROR = WRITE_ACCESS_ERROR;
 
 exports.clone = clone;
 exports.merge_objects = merge_objects;
