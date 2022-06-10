@@ -190,7 +190,8 @@ function replace_text( Text, Search, Replace )
 	await execute_command( `bash build/webpack/010-webpack.sh` );
 
 	//=====================================================================
-	// - Runs tests and store output in docs/external/testing-output.md: `npx mocha -u bdd tests/*.js --timeout 0 --slow 10`
+	// - Runs tests and store output in docs/external/testing-output.md:
+	//		`npx mocha -u bdd tests/*.js --timeout 0 --slow 10`
 	//=====================================================================
 
 	if ( CONFIG.RunMochaTests )
@@ -208,18 +209,6 @@ function replace_text( Text, Search, Replace )
 			);
 		}
 	}
-
-	// // - Copy 'docs/external/license.md' to project root.
-	// log_blank_line();
-	// log_heading( 'Preflight: Copy docs/external/license.md to project root' );
-	// path = LIB_PATH.join( process.cwd(), 'docs', 'external', 'license.md' );
-	// LIB_FS.copyFileSync( path, LIB_PATH.join( process.cwd(), 'license.md' ) );
-
-	// // - Copy 'docs/external/readme.md' to project root.
-	// log_blank_line();
-	// log_heading( 'Preflight: Copy docs/external/license.md to project root' );
-	// path = LIB_PATH.join( process.cwd(), 'docs', 'external', 'readme.md' );
-	// LIB_FS.copyFileSync( path, LIB_PATH.join( process.cwd(), 'readme.md' ) );
 
 	//=====================================================================
 	// - Copy 'license.md' to 'docs/external'.
