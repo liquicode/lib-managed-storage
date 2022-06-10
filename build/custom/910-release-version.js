@@ -23,7 +23,7 @@ Dependencies:
 - Copy 'VERSION' to 'docs/external'.
 - Do final staging: `git add .`
 - Do final commit: `git commit -m "Finalization for vX.Y.Z"`
-- Do final push: `git push origin master`
+- Do final push: `git push origin main`
 - Create git version tag: `git tag -a vX.Y.Z -m "Version vX.Y.Z"`
 - Push git version tag: `git push origin vX.Y.Z`
 - Create new npm version: `npm publish . --access public`
@@ -42,7 +42,7 @@ Dependencies:
 
 - Do initial staging: `git add .`
 - Do initial commit: `git commit -m "Initialization for vX.Y.Z"`
-- Do initial push: `git push origin master`
+- Do initial push: `git push origin main`
 
 */
 
@@ -248,10 +248,10 @@ function replace_text( Text, Search, Replace )
 		await execute_command( `git commit -m "Finalization for v${PACKAGE.version}"` );
 	}
 
-	// - Do final push: `git push origin master`
+	// - Do final push: `git push origin main`
 	log_blank_line();
 	log_heading( 'Do final push before version tag' );
-	await execute_command( `git push origin master` );
+	await execute_command( `git push origin main` );
 
 	// - Create git version tag: `git tag -a vX.Y.Z -m "Version vX.Y.Z"`
 	log_blank_line();
@@ -350,10 +350,10 @@ function replace_text( Text, Search, Replace )
 	log_heading( 'Do initial commit for new version' );
 	await execute_command( `git commit -m "Initialization for v${PACKAGE.version}"` );
 
-	// - Do final push: `git push origin master`
+	// - Do final push: `git push origin main`
 	log_blank_line();
 	log_heading( 'Do final push for new version' );
-	await execute_command( `git push origin master` );
+	await execute_command( `git push origin main` );
 
 
 	log_blank_line();

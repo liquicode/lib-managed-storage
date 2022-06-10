@@ -142,4 +142,3 @@ Notices
 - [Library Docs Site](http://lib-managed-storage.liquicode.com)
 - [Library NPM Page](https://www.npmjs.com/package/@liquicode/lib-managed-storage)
 
-
