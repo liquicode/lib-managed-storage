@@ -2,7 +2,7 @@
 
 ![logo](media/template-lib-banner-large.png)
 
-# template-lib <small>(v0.0.1)</small>
+# lib-managed-storage <small>(v0.0.3)</small>
 
 <hr>
 
@@ -15,7 +15,7 @@
 - Many Features
 - Many More Features
 
-[GitHub](https://github.com/liquicode/template-lib)
+[GitHub](https://github.com/liquicode/lib-managed-storage)
 [Get Started](external/readme.md)
 
 

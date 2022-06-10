@@ -31,7 +31,7 @@
 
 <hr>
 
-- Information
+- More Information
 
 	- [Testing Output](external/testing-output.md)
 	- [Software License](external/license.md)

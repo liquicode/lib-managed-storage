@@ -1,4 +1,5 @@
-# lib-managed-storage (v0.0.1)
+# lib-managed-storage
+***(v0.0.3)***
 
 A storage engine for managed objects. Tracks object identity, ownership, and permissions.
 
@@ -13,10 +14,10 @@ A storage engine for managed objects. Tracks object identity, ownership, and per
 | Works with user |      | Combines user identity |      | Controls access    |    \     
 | owned objects.  |      | with object identity.  |      | by user identity.  |     \     +--------------------------+
 +-----------------+      +------------------------+      +--------------------+      \    |      JsonProvider        |
-								                                                      ==> +--------------------------+
-                                                                  	                      | Reads and writes objects |
-															                              | to an in-memory array.   |
-															                              +--------------------------+
+                                                                                      ==> +--------------------------+
+                                                                                          | Reads and writes objects |
+                                                                                          | to an in-memory array.   |
+                                                                                          +--------------------------+
 ```
 
 
