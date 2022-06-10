@@ -40,7 +40,7 @@ Simple Usage
 ```javascript
 const LIB_MANAGED_STORAGE = require( '@liquicode/lib-managed-storage' );
 
-// Make some fake users.
+// Make some fake users to work with.
 let Alice = { user_id: 'alice@fake.com', user_role: 'admin' };
 let Bob = { user_id: 'bob@fake.com', user_role: 'user' };
 let Eve = { user_id: 'eve@fake.com', user_role: 'user' };
@@ -73,7 +73,10 @@ doc = await storage.CreateOne( Eve, { name: 'Evil Plans', text: 'Step 1: Take ov
 Function Summary
 ---------------------------------------------------------------------
 
-Call `LIB_MANAGED_STORAGE.NewManagedStorage()` to create a new storage object which exports these functions:
+Call the `LIB_MANAGED_STORAGE.NewManagedStorage()` function to create a new `ManagedStorage` object 
+that an application can use to manage a collection of objects.
+
+The `ManagedStorage` object exports these functions:
 
 ### Discovery Functions
 

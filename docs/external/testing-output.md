@@ -4,19 +4,54 @@
 ```
 
 
-  00) Base Tests
+  000) Base Tests
     Assert Tests
       ✓ LIB_ASSERT.ok( true )
       ✓ LIB_ASSERT.strictEqual( 1, 1 )
       ✓ LIB_ASSERT.notStrictEqual( 0, 1 )
-    Library Tests
-      ✓ returns 1 when called with no arguments
-      ✓ returns the argument when called with a single argument
-      ✓ handles two arguments
-      ✓ handles multiple arguments
+
+  010) MongoProvider Tests
+    Collection Tests; 10 objects
+      ✓ Should create test objects (3435ms)
+      ✓ Should read and write test objects (9226ms)
+      ✓ Should find all test objects (290ms)
+      ✓ Should delete all test objects (584ms)
+
+  011.1) JsonProvider (no-flush) Tests
+    Collection Tests; 0 objects, no flush
+      ✓ Should create test objects (44ms)
+      ✓ Should read and write test objects (9087ms)
+      ✓ Should find all test objects (7ms)
+      ✓ Should delete all test objects (13ms)
+
+  011.2) JsonProvider (flush on update) Tests
+    Collection Tests; 1000 objects, flush_on_update: true
+      ✓ Should create test objects (9702ms)
+      ✓ Should read and write test objects (24969ms)
+      ✓ Should find all test objects
+      ✓ Should have a disk file
+      ✓ Should delete all test objects (31ms)
+
+  011.3) JsonProvider (flush on interval) Tests
+    Collection Tests; 1000 objects, flush_every_ms: 1000
+      ✓ Should create test objects (63ms)
+      ✓ Should read and write test objects (8728ms)
+      ✓ Should find all test objects
+      ✓ Should have a disk file
+      ✓ Should delete all test objects (21ms)
+
+  020) ManagedStorage Tests
+    Alice, Bob, and Eve scenario
+      ✓ Should add documents and set permissions
+      ✓ Alice should read all documents and write all documents
+      ✓ Bob should read some documents and write some documents
+      ✓ Eve should read some documents and write some documents
+      ✓ Public objects should be readable by everyone
+      ✓ Public objects should only be writable by the owner
+      ✓ Should not allow readers to update documents
 
 
-  7 passing (4ms)
+  28 passing (1m)
 
 
 ```
