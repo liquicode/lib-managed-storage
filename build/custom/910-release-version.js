@@ -50,6 +50,7 @@ const LIB_FS = require( 'fs' );
 const LIB_PATH = require( 'path' );
 const LIB_CHILD_PROCESS = require( 'child_process' );
 const LIB_SHELL_COLORS = require( './ShellColors.js' );
+const { Config } = require( '../__secrets/product-config.js' );
 
 const CONFIG = require( '../__secrets/product-config.js' ).Config;
 
@@ -192,17 +193,20 @@ function replace_text( Text, Search, Replace )
 	// - Runs tests and store output in docs/external/testing-output.md: `npx mocha -u bdd tests/*.js --timeout 0 --slow 10`
 	//=====================================================================
 
-	log_blank_line();
-	log_heading( 'Preflight: Runs tests and store output in docs/external/testing-output.md' );
+	if ( CONFIG.RunMochaTests )
 	{
-		result = await execute_command( `npx mocha -u bdd tests/*.js --timeout 0 --slow 10` );
-		path = LIB_PATH.join( process.cwd(), 'docs', 'external', 'testing-output.md' );
-		LIB_FS.writeFileSync( path,
-			"# Testing Output\n\n\n"
-			+ "```\n"
-			+ result.stdout + "\n"
-			+ "```\n\n\n"
-		);
+		log_blank_line();
+		log_heading( 'Preflight: Runs tests and store output in docs/external/testing-output.md' );
+		{
+			result = await execute_command( `npx mocha -u bdd tests/*.js --no-timeout --slow 1000000` );
+			path = LIB_PATH.join( process.cwd(), 'docs', 'external', 'testing-output.md' );
+			LIB_FS.writeFileSync( path,
+				"# Testing Output\n\n\n"
+				+ "```\n"
+				+ result.stdout + "\n"
+				+ "```\n\n\n"
+			);
+		}
 	}
 
 	// // - Copy 'docs/external/license.md' to project root.
