@@ -180,12 +180,18 @@ function replace_text( Text, Search, Replace )
 	//=====================================================================
 
 
+	//=====================================================================
 	// - Do webpack: `bash build/webpack/010-webpack.sh`
+	//=====================================================================
+
 	log_blank_line();
 	log_heading( 'Preflight: Do webpack' );
 	await execute_command( `bash build/webpack/010-webpack.sh` );
 
+	//=====================================================================
 	// - Runs tests and store output in docs/external/testing-output.md: `npx mocha -u bdd tests/*.js --timeout 0 --slow 10`
+	//=====================================================================
+
 	log_blank_line();
 	log_heading( 'Preflight: Runs tests and store output in docs/external/testing-output.md' );
 	{
@@ -211,23 +217,36 @@ function replace_text( Text, Search, Replace )
 	// path = LIB_PATH.join( process.cwd(), 'docs', 'external', 'readme.md' );
 	// LIB_FS.copyFileSync( path, LIB_PATH.join( process.cwd(), 'readme.md' ) );
 
+	//=====================================================================
 	// - Copy 'license.md' to 'docs/external'.
+	//=====================================================================
+
 	log_blank_line();
 	log_heading( 'Preflight: Copy license.md to docs/external' );
 	path = LIB_PATH.join( process.cwd(), 'docs', 'external', 'license.md' );
 	LIB_FS.copyFileSync( LIB_PATH.join( process.cwd(), 'license.md' ), path );
 
+	//=====================================================================
 	// - Copy 'readme.md' to 'docs/external'.
+	//=====================================================================
+
 	log_blank_line();
 	log_heading( 'Preflight: Copy readme.md to docs/external' );
 	path = LIB_PATH.join( process.cwd(), 'docs', 'external', 'readme.md' );
 	LIB_FS.copyFileSync( LIB_PATH.join( process.cwd(), 'readme.md' ), path );
 
+	//=====================================================================
 	// - Copy 'VERSION' to 'docs/external'.
+	//=====================================================================
+
 	log_blank_line();
 	log_heading( 'Preflight: Copy VERSION to docs/external' );
 	path = LIB_PATH.join( process.cwd(), 'docs', 'external', 'VERSION' );
 	LIB_FS.copyFileSync( LIB_PATH.join( process.cwd(), 'VERSION' ), path );
+
+	//=====================================================================
+	// Update git repository and mark with the version tag
+	//=====================================================================
 
 	// - Do final staging: `git add .`
 	log_blank_line();
@@ -263,17 +282,23 @@ function replace_text( Text, Search, Replace )
 	log_heading( 'Push git version tag' );
 	await execute_command( `git push origin v${PACKAGE.version}` );
 
+	//=====================================================================
+	// - Create new npm version: `npm publish . --access public`
+	//=====================================================================
+
 	if ( CONFIG.HasNpmRegistry )
 	{
-		// - Create new npm version: `npm publish . --access public`
 		log_blank_line();
 		log_heading( 'Create new npm version' );
 		await execute_command( `npm publish . --access public` );
 	}
 
+	//=====================================================================
+	// - Update S3 docs: `bash build/s3/810-s3-sync-docs.sh`
+	//=====================================================================
+
 	if ( CONFIG.HasS3Docs )
 	{
-		// - Update S3 docs: `bash build/s3/810-s3-sync-docs.sh`
 		log_blank_line();
 		log_heading( 'Update S3 docs' );
 		await execute_command( `bash build/s3/810-s3-sync-docs.sh` );
