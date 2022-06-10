@@ -1,6 +1,6 @@
 {
 	"name": "@liquicode/lib-managed-storage",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "A storage engine for managed objects. Tracks object identity, ownership, and permissions.",
 	"homepage": "http://lib-managed-storage.liquicode.com",
 	"license": "MIT",
