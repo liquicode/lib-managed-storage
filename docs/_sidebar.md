@@ -17,6 +17,7 @@
 
 - Examples
 
+	- [Basic Storage](examples/Basic-Storage-Example.md)
 	- [Object Sharing](examples/Object-Sharing-Example.md)
 
 

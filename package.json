@@ -4,6 +4,7 @@
 	"description": "A storage engine for managed objects. Tracks object identity, ownership, and permissions.",
 	"homepage": "http://lib-managed-storage.liquicode.com",
 	"license": "MIT",
+	"public": true,
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/liquicode/lib-managed-storage"
@@ -36,7 +37,14 @@
 		"javascript",
 		"js",
 		"nodejs",
-		"node"
+		"node",
+		"mongo",
+		"mongodb",
+		"json",
+		"jsondb",
+		"jsondbfs",
+		"file system",
+		"in-memory"
 	],
 	"dependencies": {
 		"babel-polyfill": "^6.26.0",
