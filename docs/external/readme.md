@@ -1,5 +1,5 @@
 # lib-managed-storage
-***(v0.0.7)***
+***(v0.0.8)***
 
 A storage engine for managed objects. Tracks object identity, ownership, and permissions.
 
@@ -119,6 +119,7 @@ The `ManagedStorage` object exports these functions:
 Notices
 ---------------------------------------------------------------------
 
+- Dedicated to my family, without whom, this work would not be possible.
 - Source code ASCII art banners generated using [https://patorjk.com/software/taag](https://patorjk.com/software/taag/#p=display&f=Univers) with the "Univers" font.
 - The `JsonProvider` implementation was partly inspired by the project [jsondbfs](https://github.com/mcmartins/jsondbfs).
 
