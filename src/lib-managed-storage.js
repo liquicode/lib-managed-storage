@@ -194,61 +194,48 @@ exports.NewManagedStorage =
 		//=====================================================================
 
 
-		// //---------------------------------------------------------------------
-		// managed_storage.NewManagedObject =
-		// 	function _NewManagedObject( Owner, Prototype ) 
-		// 	{
-		// 		if ( !LIB_UTILS.value_exists( Owner ) ) { throw LIB_UTILS.MISSING_PARAMETER_ERROR( 'Owner' ); }
-		// 		if ( !LIB_UTILS.value_exists( Owner.email ) ) { throw LIB_UTILS.MISSING_PARAMETER_ERROR( 'Owner.email' ); }
-		// 		Owner.name = Owner.name || '';
+		//---------------------------------------------------------------------
+		managed_storage.NewManagedObject =
+			function _NewManagedObject( Owner, Prototype ) 
+			{
+				if ( !LIB_UTILS.value_exists( Owner ) ) { throw LIB_UTILS.MISSING_PARAMETER_ERROR( 'Owner' ); }
+				if ( !LIB_UTILS.value_exists( Owner.user_id ) ) { throw LIB_UTILS.MISSING_PARAMETER_ERROR( 'Owner.user_id' ); }
 
-		// 		// Create a new managed object.
-		// 		let managed_object = {
-		// 			_m: {
-		// 				id: LIB_UUID.v4(),
-		// 				created_at: LIB_UTILS.zulu_timestamp(),
-		// 				updated_at: LIB_UTILS.zulu_timestamp(),
-		// 				owner_id: Owner.user_id,
-		// 				partners: [],
-		// 				public: false,
-		// 			},
-		// 			_o: {}
-		// 		};
+				// Create a new managed object.
+				let managed_object = {
+					_m: {
+						id: LIB_UUID.v4(),
+						created_at: LIB_UTILS.zulu_timestamp(),
+						updated_at: LIB_UTILS.zulu_timestamp(),
+						owner_id: Owner.user_id,
+						readers: [],
+						writers: [],
+						public: false,
+					},
+					_o: LIB_UTILS.clone( Prototype ),
+				};
 
-		// 		// Apply the object definitions.
-		// 		let storage_configuration = StorageConfiguration;
-		// 		if ( storage_configuration.object && storage_configuration.object.fields && storage_configuration.object.fields.length )
-		// 		{
-		// 			for ( let index = 0; index < storage_configuration.object.fields.length; index++ )
-		// 			{
-		// 				let field = storage_configuration.object.fields[ index ];
-		// 				managed_object._o[ field.member ] = null;
-		// 				if ( field.type === 'string' ) { managed_object._o[ field.member ] = ''; }
-		// 				else if ( field.type === 'date' ) { managed_object._o[ field.member ] = ''; }
-		// 				else if ( field.type === 'url' ) { managed_object._o[ field.member ] = ''; }
-		// 				else if ( field.type === 'image_url' ) { managed_object._o[ field.member ] = ''; }
-		// 				else if ( field.type === 'number' ) { managed_object._o[ field.member ] = 0; }
-		// 				else if ( field.type === 'array' ) { managed_object._o[ field.member ] = []; }
-		// 				else if ( field.type === 'object' ) { managed_object._o[ field.member ] = {}; }
-		// 			}
-		// 		}
+				// // Apply the object definitions.
+				// let storage_configuration = StorageConfiguration;
+				// if ( storage_configuration.object && storage_configuration.object.fields && storage_configuration.object.fields.length )
+				// {
+				// 	for ( let index = 0; index < storage_configuration.object.fields.length; index++ )
+				// 	{
+				// 		let field = storage_configuration.object.fields[ index ];
+				// 		managed_object._o[ field.member ] = null;
+				// 		if ( field.type === 'string' ) { managed_object._o[ field.member ] = ''; }
+				// 		else if ( field.type === 'date' ) { managed_object._o[ field.member ] = ''; }
+				// 		else if ( field.type === 'url' ) { managed_object._o[ field.member ] = ''; }
+				// 		else if ( field.type === 'image_url' ) { managed_object._o[ field.member ] = ''; }
+				// 		else if ( field.type === 'number' ) { managed_object._o[ field.member ] = 0; }
+				// 		else if ( field.type === 'array' ) { managed_object._o[ field.member ] = []; }
+				// 		else if ( field.type === 'object' ) { managed_object._o[ field.member ] = {}; }
+				// 	}
+				// }
 
-		// 		// Apply the prototype.
-		// 		if ( Prototype )
-		// 		{
-		// 			let source_object = Prototype;
-		// 			if ( source_object._o ) { source_object = source_object._o; }
-		// 			let keys = Object.keys( source_object );
-		// 			for ( let index = 0; index < keys.length; index++ )
-		// 			{
-		// 				let key = keys[ index ];
-		// 				managed_object._o[ key ] = LIB_UTILS.clone( source_object[ key ] );
-		// 			}
-		// 		}
-
-		// 		// Return the managed object.
-		// 		return managed_object;
-		// 	};
+				// Return the managed object.
+				return managed_object;
+			};
 
 
 		//=====================================================================
@@ -629,18 +616,7 @@ exports.NewManagedStorage =
 			{
 				try
 				{
-					let managed_object = {
-						_m: {
-							id: LIB_UUID.v4(),
-							created_at: LIB_UTILS.zulu_timestamp(),
-							updated_at: LIB_UTILS.zulu_timestamp(),
-							owner_id: User.user_id,
-							readers: [],
-							writers: [],
-							public: false,
-						},
-						_o: LIB_UTILS.clone( Prototype ),
-					};
+					let managed_object = managed_storage.NewManagedObject( User, Prototype );
 					let object = await storage_provider.CreateOne( managed_object );
 					if ( object ) { delete object._id; }
 					return object;
@@ -958,6 +934,14 @@ exports.NewManagedStorage =
 		 */
 		//=====================================================================
 		//=====================================================================
+
+
+		//=====================================================================
+		managed_storage.SystemAdministrator = {
+			name: 'System Administrator',
+			user_id: 'admin@system',
+			user_role: 'admin',
+		};
 
 
 		return managed_storage;
