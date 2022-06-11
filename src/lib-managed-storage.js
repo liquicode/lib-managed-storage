@@ -42,28 +42,27 @@ exports.DefaultConfiguration =
 		return {
 			// Managed Storage Configuration
 			throw_permission_errors: false,
-			// Provider Configuration
-			provider: {
-				mongodb: {
-					enabled: false,
-					collection_name: 'Collection-Name',
-					database_name: 'Database-Name',
-					connection_string: 'mongodb://<username>:<password>@<server-address',
-				},
-				json: {
-					enabled: false,
-					collection_name: 'Collection-Name',
-					database_name: '/path/to/store/collections',
-					flush_on_update: false,
-					flush_every_ms: 0,
-				},
+			// MongoDB Provider Configuration
+			mongodb: {
+				enabled: false,
+				collection_name: 'Collection-Name',
+				database_name: 'Database-Name',
+				connection_string: 'mongodb://<username>:<password>@<server-address',
 			},
-			// Object Management
-			object: {
-				title: 'Object',
-				titles: 'Objects',
-				fields: [],
+			// Json Provider Configuration
+			json: {
+				enabled: false,
+				collection_name: 'Collection-Name',
+				database_name: '/path/to/store/collections',
+				flush_on_update: false,
+				flush_every_ms: 0,
 			},
+			// // Object Management
+			// object: {
+			// 	title: 'Object',
+			// 	titles: 'Objects',
+			// 	fields: [],
+			// },
 			// // Interface Authorization
 			// interface: {
 			// 	Count: {
@@ -166,9 +165,9 @@ exports.NewManagedStorage =
 		{
 			storage_provider = LIB_MONGO_PROVIDER.NewMongoProvider( StorageConfiguration.mongodb );
 		}
-		else if ( StorageConfiguration.memory && StorageConfiguration.memory.enabled )
+		else if ( StorageConfiguration.json && StorageConfiguration.json.enabled )
 		{
-			storage_provider = LIB_JSON_PROVIDER.NewJsonProvider( StorageConfiguration.memory );
+			storage_provider = LIB_JSON_PROVIDER.NewJsonProvider( StorageConfiguration.json );
 		}
 		else
 		{
