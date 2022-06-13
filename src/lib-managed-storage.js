@@ -565,7 +565,7 @@ exports.NewManagedStorage =
 				try
 				{
 					let criteria = null;
-					if ( typeof ManagedObjectOrID === 'string' )
+					if ( typeof CriteriaOrID === 'string' )
 					{
 						criteria = _ObjectIDCriteria( { _m: { id: CriteriaOrID } } );
 					}
@@ -639,8 +639,8 @@ exports.NewManagedStorage =
 				try
 				{
 					_ValidateManagedObject( ManagedObject );
-					let Criteria = _ManagedCriteria( User, null, ManagedObject._m.id );
-					let found_object = await storage_provider.FindOne( Criteria );
+					let criteria = _ManagedCriteria( User, null, ManagedObject._m.id );
+					let found_object = await storage_provider.FindOne( criteria );
 					if ( !found_object ) 
 					{
 						if ( StorageConfiguration.throw_permission_errors ) { throw LIB_UTILS.READ_ACCESS_ERROR(); }
@@ -673,13 +673,13 @@ exports.NewManagedStorage =
 				try
 				{
 					let criteria = null;
-					if ( typeof ManagedObjectOrID === 'string' )
+					if ( typeof CriteriaOrID === 'string' )
 					{
 						criteria = _ObjectIDCriteria( { _m: { id: CriteriaOrID } } );
 					}
 					else
 					{
-						criteria = _ManagedCriteria( User, Criteria, null );
+						criteria = _ManagedCriteria( User, CriteriaOrID, null );
 					}
 					let found_object = await storage_provider.FindOne( criteria );
 					if ( !found_object ) 
@@ -725,6 +725,46 @@ exports.NewManagedStorage =
 						}
 					}
 					return deleted_count;
+				}
+				catch ( error )
+				{
+					throw error;
+				}
+			};
+
+
+		//=====================================================================
+		// SetOwner
+		//=====================================================================
+
+
+		managed_storage.SetOwner =
+			async function SetOwner( User, CriteriaOrID )
+			{
+				try
+				{
+					let criteria = null;
+					if ( typeof CriteriaOrID === 'string' )
+					{
+						criteria = _ObjectIDCriteria( { _m: { id: CriteriaOrID } } );
+					}
+					else
+					{
+						criteria = _ManagedCriteria( User, CriteriaOrID, null );
+					}
+					let found_object = await storage_provider.FindOne( criteria );
+					if ( !found_object ) 
+					{
+						if ( StorageConfiguration.throw_permission_errors ) { throw LIB_UTILS.READ_ACCESS_ERROR(); }
+						else { return 0; }
+					}
+					// if ( !_UserCanWrite( User, found_object ) ) 
+					// {
+					// 	if ( StorageConfiguration.throw_permission_errors ) { throw LIB_UTILS.WRITE_ACCESS_ERROR(); }
+					// 	else { return 0; }
+					// }
+					found_object._m.owner_id = User.user_id;
+					return await storage_provider.WriteOne( found_object );
 				}
 				catch ( error )
 				{

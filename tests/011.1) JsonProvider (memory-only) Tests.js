@@ -12,7 +12,7 @@ const LIB_ASSERT = require( 'assert' );
 
 
 //---------------------------------------------------------------------
-describe( `011.1) JsonProvider (no-flush) Tests`,
+describe( `011.1) JsonProvider (memory-only) Tests`,
 	function ()
 	{
 
@@ -57,7 +57,7 @@ describe( `011.1) JsonProvider (no-flush) Tests`,
 
 
 		//---------------------------------------------------------------------
-		describe( `Collection Tests; ${test_object_count} objects, no flush`,
+		describe( `Collection Tests; ${test_object_count} objects, memory only`,
 			function ()
 			{
 

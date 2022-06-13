@@ -82,29 +82,31 @@ The `ManagedStorage` object exports these functions:
 ### Discovery Functions
 
 - `Count ( User, Criteria )`
-	: Returns the number of objects available to `User` according to the supplied `Criteria`.
+	: Returns the number of objects available to `User` as specified by `Criteria`.
 - `FindOne ( User, CriteriaOrID )`
-	: Returns a single object specified by `CriteriaOrID`.
+	: Returns a single object as specified by `CriteriaOrID`.
 - `FindMany ( User, Criteria )`
-	: Returns an array of objects according to the supplied `CriteriaOrID`.
+	: Returns an array of objects as specified by `Criteria`.
 
 ### Manipulation Functions
 
 - `CreateOne ( User, Prototype )`
 	: Creates a new object in the collection that is owned by `User`.
 - `WriteOne ( User, ManagedObject )`
-	: Replaces a single object in the collection/
+	: Replaces a single object in the collection.
 - `DeleteOne ( User, CriteriaOrID )`
-	: Delete a single object in the collection.
-- `DeleteMany  User, Criteria )`
-	: Delete multiple objects in the collection.
+	: Deletes a single object in the collection.
+- `DeleteMany ( User, Criteria )`
+	: Deletes multiple objects in the collection.
 
 ### Sharing Functions
 
+- `SetOwner ( User, CriteriaOrID )`
+	: Sets `User` as the owner of the object specified by `CriteriaOrID`.
 - `Share ( User, ManagedObjectOrID, Readers, Writers, MakePublic )`
-	: Share a single object to other users.
+	: Shares a single object to other users.
 - `Unshare ( User, ManagedObjectOrID, NotReaders, NotWriters, MakeUnpublic )`
-	: Unshare a single object.
+	: Unshares a single object.
 
 ### Function Parameters
 
@@ -115,6 +117,7 @@ The `ManagedStorage` object exports these functions:
 - `ManagedObject`
 	: A json object containing a `_m` field which stores object management information
 	and a `_o` field containing the application spelcific object data.
+
 
 Notices
 ---------------------------------------------------------------------
