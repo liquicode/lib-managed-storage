@@ -178,47 +178,52 @@ LIB_MANAGED_STORAGE.NewManagedStorage =
 
 
 		//---------------------------------------------------------------------
-		function _ManagedCriteria( User, CriteriaOrID )
+		function _ManagedCriteria( User, ObjectOrID )
 		{
 			_ValidateUser( User );
 
 			// Construct the query criteria.
 			let criteria = {};
 
-			if ( typeof CriteriaOrID === 'string' )
+			let object_type = ( typeof ObjectOrID );
+			if ( object_type === 'string' )
 			{
-				criteria._m = { id: CriteriaOrID }; // Match a single, specific object.
+				criteria._m = { id: ObjectOrID }; // Match a single, specific object.
 			}
-			else if ( typeof CriteriaOrID === 'object' )
+			else if ( object_type === 'object' )
 			{
-				if ( CriteriaOrID !== null )
+				if ( ObjectOrID === null )
 				{
-					if ( !LIB_UTILS.value_missing_null_empty( CriteriaOrID._m ) &&
-						!LIB_UTILS.value_missing_null_empty( CriteriaOrID._m.id ) )
+					// Do nothing.
+				}
+				else
+				{
+					if ( !LIB_UTILS.value_missing_null_empty( ObjectOrID._m ) &&
+						!LIB_UTILS.value_missing_null_empty( ObjectOrID._m.id ) )
 					{
-						criteria._m = { id: CriteriaOrID._m.id }; // Match a single, specific object.
+						criteria._m = { id: ObjectOrID._m.id }; // Match a single, specific object.
 					}
 					else
 					{
-						if ( !LIB_UTILS.value_missing_null_empty( CriteriaOrID._o ) )
+						if ( !LIB_UTILS.value_missing_null_empty( ObjectOrID._o ) )
 						{
-							criteria._o = LIB_UTILS.clone( CriteriaOrID._o ); // match _o with the proviuded values.
+							criteria._o = LIB_UTILS.clone( ObjectOrID._o ); // match _o with the proviuded values.
 						}
 						else
 						{
-							criteria._o = LIB_UTILS.clone( CriteriaOrID ); // match _o with the proviuded values.
+							criteria._o = LIB_UTILS.clone( ObjectOrID ); // match _o with the proviuded values.
 							delete criteria._o._m;
 						}
 					}
 				}
 			}
-			else if ( typeof CriteriaOrID === 'undefined' ) 
+			else if ( object_type === 'undefined' ) 
 			{
 				// Do nothing.
 			}
 			else
 			{
-				throw new Error( `Unknown parameter type for [CriteriaOrID].` );
+				throw new Error( `Unknown parameter type [${object_type}] for [ObjectOrID]. Must be a string, object, null, or undefined.` );
 			}
 
 			// Apply role based restrictions.
@@ -241,11 +246,11 @@ LIB_MANAGED_STORAGE.NewManagedStorage =
 
 
 		managed_storage.Count =
-			async function Count( User, CriteriaOrID )
+			async function Count( User, Criteria )
 			{
 				try
 				{
-					let criteria = _ManagedCriteria( User, CriteriaOrID );
+					let criteria = _ManagedCriteria( User, Criteria );
 					return await storage_provider.Count( criteria );
 				}
 				catch ( error )
@@ -261,11 +266,11 @@ LIB_MANAGED_STORAGE.NewManagedStorage =
 
 
 		managed_storage.FindOne =
-			async function FindOne( User, CriteriaOrID )
+			async function FindOne( User, Criteria )
 			{
 				try
 				{
-					let criteria = _ManagedCriteria( User, CriteriaOrID );
+					let criteria = _ManagedCriteria( User, Criteria );
 					let object = await storage_provider.FindOne( criteria );
 					if ( object ) { delete object._id; }
 					return object;
@@ -283,11 +288,11 @@ LIB_MANAGED_STORAGE.NewManagedStorage =
 
 
 		managed_storage.FindMany =
-			async function FindMany( User, CriteriaOrID )
+			async function FindMany( User, Criteria )
 			{
 				try
 				{
-					let criteria = _ManagedCriteria( User, CriteriaOrID );
+					let criteria = _ManagedCriteria( User, Criteria );
 					let objects = await storage_provider.FindMany( criteria );
 					objects.forEach( object => { delete object._id; } );
 					return objects;
@@ -327,11 +332,11 @@ LIB_MANAGED_STORAGE.NewManagedStorage =
 
 
 		managed_storage.WriteOne =
-			async function WriteOne( User, CriteriaOrID, DataObject )
+			async function WriteOne( User, Criteria, DataObject )
 			{
 				try
 				{
-					let criteria = _ManagedCriteria( User, CriteriaOrID );
+					let criteria = _ManagedCriteria( User, Criteria );
 					let found_object = await storage_provider.FindOne( criteria );
 					if ( !found_object ) 
 					{
@@ -364,11 +369,11 @@ LIB_MANAGED_STORAGE.NewManagedStorage =
 
 
 		managed_storage.DeleteOne =
-			async function DeleteOne( User, CriteriaOrID )
+			async function DeleteOne( User, Criteria )
 			{
 				try
 				{
-					let criteria = _ManagedCriteria( User, CriteriaOrID );
+					let criteria = _ManagedCriteria( User, Criteria );
 					let found_object = await storage_provider.FindOne( criteria );
 					if ( !found_object ) 
 					{
@@ -395,11 +400,11 @@ LIB_MANAGED_STORAGE.NewManagedStorage =
 
 
 		managed_storage.DeleteMany =
-			async function DeleteMany( User, CriteriaOrID )
+			async function DeleteMany( User, Criteria )
 			{
 				try
 				{
-					let criteria = _ManagedCriteria( User, CriteriaOrID );
+					let criteria = _ManagedCriteria( User, Criteria );
 					let operation_count = 0;
 					let found_objects = await storage_provider.FindMany( criteria );
 					for ( let found_object_index = 0; found_object_index < found_objects.length; found_object_index++ )
@@ -427,11 +432,11 @@ LIB_MANAGED_STORAGE.NewManagedStorage =
 
 
 		managed_storage.SetOwner =
-			async function SetOwner( User, CriteriaOrID )
+			async function SetOwner( User, Criteria )
 			{
 				try
 				{
-					let criteria = _ManagedCriteria( User, CriteriaOrID );
+					let criteria = _ManagedCriteria( User, Criteria );
 					let operation_count = 0;
 					let found_objects = await storage_provider.FindMany( criteria );
 					for ( let found_object_index = 0; found_object_index < found_objects.length; found_object_index++ )
@@ -459,11 +464,11 @@ LIB_MANAGED_STORAGE.NewManagedStorage =
 
 
 		managed_storage.Share =
-			async function Share( User, CriteriaOrID, Readers, Writers, MakePublic )
+			async function Share( User, Criteria, Readers, Writers, MakePublic )
 			{
 				try
 				{
-					let criteria = _ManagedCriteria( User, CriteriaOrID );
+					let criteria = _ManagedCriteria( User, Criteria );
 					let operation_count = 0;
 					let found_objects = await storage_provider.FindMany( criteria );
 					for ( let found_object_index = 0; found_object_index < found_objects.length; found_object_index++ )
@@ -537,11 +542,11 @@ LIB_MANAGED_STORAGE.NewManagedStorage =
 
 
 		managed_storage.Unshare =
-			async function Unshare( User, CriteriaOrID, NotReaders, NotWriters, MakeNotPublic )
+			async function Unshare( User, Criteria, NotReaders, NotWriters, MakeNotPublic )
 			{
 				try
 				{
-					let criteria = _ManagedCriteria( User, CriteriaOrID );
+					let criteria = _ManagedCriteria( User, Criteria );
 					let operation_count = 0;
 					let found_objects = await storage_provider.FindMany( criteria );
 					for ( let found_object_index = 0; found_object_index < found_objects.length; found_object_index++ )

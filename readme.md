@@ -101,36 +101,36 @@ const LIB_MANAGED_STORAGE = require( '@liquicode/lib-managed-storage' );
 
 ### Discovery Functions
 
-- `Count ( User, CriteriaOrID )`
-	: Returns the number of objects available to `User` as specified by `CriteriaOrID`.
+- `Count ( User, Criteria )`
+	: Returns the number of objects available to `User` as specified by `Criteria`.
 
-- `FindOne ( User, CriteriaOrID )`
-	: Returns a single object as specified by `CriteriaOrID`.
+- `FindOne ( User, Criteria )`
+	: Returns a single object as specified by `Criteria`.
 
-- `FindMany ( User, CriteriaOrID )`
-	: Returns an array of objects as specified by `CriteriaOrID`.
+- `FindMany ( User, Criteria )`
+	: Returns an array of objects as specified by `Criteria`.
 
 ### Manipulation Functions
 
 - `CreateOne ( User, Prototype )`
 	: Creates a new object in the collection that is owned by `User`.
 
-- `WriteOne ( User, CriteriaOrID, DataObject )`
+- `WriteOne ( User, Criteria, DataObject )`
 	: Replaces a single object in the collection.
 
-- `DeleteOne ( User, CriteriaOrID )`
+- `DeleteOne ( User, Criteria )`
 	: Deletes a single object in the collection.
 
-- `DeleteMany ( User, CriteriaOrID )`
+- `DeleteMany ( User, Criteria )`
 	: Deletes multiple objects in the collection.
 
 ### Permissions Functions
 
-- `SetOwner ( User, OwnerID, CriteriaOrID )`
-	: Sets `OwnerID` as the owner of the objects specified by `CriteriaOrID`.
+- `SetOwner ( User, OwnerID, Criteria )`
+	: Sets `OwnerID` as the owner of the objects specified by `Criteria`.
 	Only users with a `user_role` of `'admin'` or `'super'` can call this function.
 
-- `Share ( User, CriteriaOrID, Readers, Writers, MakePublic )`
+- `Share ( User, Criteria, Readers, Writers, MakePublic )`
 	: Shares objects to other users.
 	`Readers` is a string or array of strings, containing the `user_id`s of the users that can read these objects.
 	The readers list is updated and not overwritten.
@@ -141,7 +141,7 @@ const LIB_MANAGED_STORAGE = require( '@liquicode/lib-managed-storage' );
 	`MakePublic` is an optional boolean value.
 	If a boolean value is provided it will mark the matched objects as public or not public accordingly.
 
-- `Unshare ( User, CriteriaOrID, NotReaders, NotWriters, MakeUnpublic )`
+- `Unshare ( User, Criteria, NotReaders, NotWriters, MakeUnpublic )`
 	: Unshares objects from other users.
 	`NotReaders` is a string or array of strings, containing the `user_id`s of the users that cannnot read these objects.
 	The readers list is updated and not overwritten.
@@ -157,7 +157,7 @@ const LIB_MANAGED_STORAGE = require( '@liquicode/lib-managed-storage' );
 - `User`
 	: A json object containing the fields `user_id` and `user_role`.
 
-- `CriteriaOrID` can be one of:
+- `Criteria` can be one of:
 	- If missing/undefined or null, then all objects are matched.
 	- A regular json object whose values are matched against the `_o` field of managed objects in storage.
 		This is a MongoDB-like object query to specify one or more objects.
