@@ -99,7 +99,7 @@ The `ManagedStorage` object exports these functions:
 - `DeleteMany ( User, Criteria )`
 	: Deletes multiple objects in the collection.
 
-### Sharing Functions
+### Permissions Functions
 
 - `SetOwner ( User, CriteriaOrID )`
 	: Sets `User` as the owner of the object specified by `CriteriaOrID`.
