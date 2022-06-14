@@ -34,9 +34,7 @@ describe( `020) ManagedStorage Tests`,
 				collection_name: 'test-objects',
 				database_name: LIB_PATH.join( __dirname, '~temp' ),
 				clear_collection_on_start: true,
-				flush_on_update: false,
 				// flush_on_update: true, // For troubleshooting the tests.
-				flush_every_ms: 0,
 			}
 		};
 		let managed_storage = LIB_MANAGED_STORAGE.NewManagedStorage( managed_config );
