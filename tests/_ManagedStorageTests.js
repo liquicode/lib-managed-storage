@@ -77,7 +77,7 @@ exports.ReadAndWriteTestObjects =
 			try
 			{
 				new_data_object._o.order_number += 1000;
-				object_count = await Storage.WriteOne( User, new_data_object );
+				object_count = await Storage.WriteOne( User, new_data_object, new_data_object );
 			}
 			catch ( error )
 			{
@@ -88,7 +88,7 @@ exports.ReadAndWriteTestObjects =
 			// Find the object again.
 			try
 			{
-				data_object.order_number+=1000;
+				data_object.order_number += 1000;
 				new_data_object = await Storage.FindOne( User, data_object );
 			}
 			catch ( error )
