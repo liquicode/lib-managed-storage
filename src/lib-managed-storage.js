@@ -622,6 +622,3 @@ LIB_MANAGED_STORAGE.NewManagedStorage =
 	};
 exports.NewManagedStorage = LIB_MANAGED_STORAGE.NewManagedStorage;
 
-
-
-

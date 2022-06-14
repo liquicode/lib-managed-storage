@@ -17,8 +17,8 @@
       ✓ Should find all test objects
       ✓ Should delete all test objects
 
-  011.1) JsonProvider (no-flush) Tests
-    Collection Tests; 0 objects, no flush
+  011.1) JsonProvider (memory-only) Tests
+    Collection Tests; 0 objects, memory only
       ✓ Should create test objects
       ✓ Should read and write test objects
       ✓ Should find all test objects
@@ -41,6 +41,13 @@
       ✓ Should delete all test objects
 
   020) ManagedStorage Tests
+    Collection Tests; 1000 objects
+      ✓ Should create test objects
+      ✓ Should read and write test objects
+      ✓ Should find all test objects
+      ✓ Should delete all test objects
+
+  021) Storage Permissions Tests
     Alice, Bob, and Eve scenario
       ✓ Should add documents and set permissions
       ✓ Alice should read all documents and write all documents
@@ -51,7 +58,7 @@
       ✓ Should not allow readers to update documents
 
 
-  28 passing (12s)
+  32 passing (36s)
 
 
 ```

@@ -1,5 +1,5 @@
 # lib-managed-storage
-***(v0.0.10)***
+***(v0.0.11)***
 
 A storage engine for managed objects. Tracks object identity, ownership, and permissions.
 
@@ -48,73 +48,130 @@ let Eve = { user_id: 'eve@fake.com', user_role: 'user' };
 
 // Get the managed storage.
 let storage = LIB_MANAGED_STORAGE.NewManagedStorage(); // Defaults to an in-memory json array.
+
 let doc = null;
 
-// Create some documents for Alice.
+// Alice creates a public document that anyone can read.
 doc = await storage.CreateOne( Alice, { name: 'Public Document', text: 'This is a public document.' } );
 await storage.Share( Alice, doc, null, null, true ); // Share this doc with everyone.
 
+// Alice creates a restricted document that only specific users have read or write access to.
 doc = await storage.CreateOne( Alice, { name: 'Internal Document', text: 'This is an internal document.' } );
 await storage.Share( Alice, doc, null, Bob.user_id ); // Give read and write access to Bob.
 await storage.Share( Alice, doc, Eve.user_id ); // Give read-only access to Eve.
 
+// Alice creates a restricted document that only specific users have read or write access to.
 doc = await storage.CreateOne( Alice, { name: 'Secret Document', text: 'This is a secret document.' } );
 await storage.Share( Alice, doc, Bob.user_id ); // Give read-only access to Bob.
 
-// Create some documents for Bob.
+// Create some private documents for Bob.
 doc = await storage.CreateOne( Bob, { name: 'My Document', text: 'This is my document.' } );
 doc = await storage.CreateOne( Bob, { name: 'My Document 2', text: 'This is my other document.' } );
 
-// Create a document for Eve.
+// Create a private document for Eve.
 doc = await storage.CreateOne( Eve, { name: 'Evil Plans', text: 'Step 1: Take over the world.' } );
 
 ```
 
 
-Function Summary
+API Summary
 ---------------------------------------------------------------------
 
-Call the `LIB_MANAGED_STORAGE.NewManagedStorage()` function to create a new `ManagedStorage` object 
-that an application can use to manage a collection of objects.
+To use this library, first install into your project with NPM:
+```bash
+npm install @liquicode/lib-managed-storage
+```
 
-The `ManagedStorage` object exports these functions:
+Then, include it into your application code like this:
+```javascript
+const LIB_MANAGED_STORAGE = require( '@liquicode/lib-managed-storage' );
+```
+
+### Library Functions
+
+- `DefaultConfiguration ( )`
+	: Returns a default storage configuration.
+
+- `NewManagedObject ( Owner, Prototype )`
+	: Returns a new `ManagedObject` containing management data in the `_m` field
+	and the contents of `Prototype` in the `_o` field.
+
+- `NewManagedStorage ( Configuration )`
+	: Returns a `ManagedStorage` object that exports the functions below.
 
 ### Discovery Functions
 
-- `Count ( User, Criteria )`
-	: Returns the number of objects available to `User` according to the supplied `Criteria`.
+- `Count ( User, CriteriaOrID )`
+	: Returns the number of objects available to `User` as specified by `CriteriaOrID`.
+
 - `FindOne ( User, CriteriaOrID )`
-	: Returns a single object specified by `CriteriaOrID`.
-- `FindMany ( User, Criteria )`
-	: Returns an array of objects according to the supplied `CriteriaOrID`.
+	: Returns a single object as specified by `CriteriaOrID`.
+
+- `FindMany ( User, CriteriaOrID )`
+	: Returns an array of objects as specified by `CriteriaOrID`.
 
 ### Manipulation Functions
 
 - `CreateOne ( User, Prototype )`
 	: Creates a new object in the collection that is owned by `User`.
-- `WriteOne ( User, ManagedObject )`
-	: Replaces a single object in the collection/
+
+- `WriteOne ( User, CriteriaOrID, DataObject )`
+	: Replaces a single object in the collection.
+
 - `DeleteOne ( User, CriteriaOrID )`
-	: Delete a single object in the collection.
-- `DeleteMany  User, Criteria )`
-	: Delete multiple objects in the collection.
+	: Deletes a single object in the collection.
 
-### Sharing Functions
+- `DeleteMany ( User, CriteriaOrID )`
+	: Deletes multiple objects in the collection.
 
-- `Share ( User, ManagedObjectOrID, Readers, Writers, MakePublic )`
-	: Share a single object to other users.
-- `Unshare ( User, ManagedObjectOrID, NotReaders, NotWriters, MakeUnpublic )`
-	: Unshare a single object.
+### Permissions Functions
 
-### Function Parameters
+- `SetOwner ( User, OwnerID, CriteriaOrID )`
+	: Sets `OwnerID` as the owner of the objects specified by `CriteriaOrID`.
+	Only users with a `user_role` of `'admin'` or `'super'` can call this function.
+
+- `Share ( User, CriteriaOrID, Readers, Writers, MakePublic )`
+	: Shares objects to other users.
+	`Readers` is a string or array of strings, containing the `user_id`s of the users that can read these objects.
+	The readers list is updated and not overwritten.
+	Every `user_id` provided will be added to from the readers list.
+	`Writers` is a string or array of strings, containing the `user_id`s of the users that can write these objects.
+	The writers list is updated and not overwritten.
+	Every `user_id` provided will be added to from the writers list.
+	`MakePublic` is an optional boolean value.
+	If a boolean value is provided it will mark the matched objects as public or not public accordingly.
+
+- `Unshare ( User, CriteriaOrID, NotReaders, NotWriters, MakeUnpublic )`
+	: Unshares objects from other users.
+	`NotReaders` is a string or array of strings, containing the `user_id`s of the users that cannnot read these objects.
+	The readers list is updated and not overwritten.
+	Every `user_id` provided will be removed from the readers list.
+	`Writers` is a string or array of strings, containing the `user_id`s of the users that cannot write these objects.
+	The writers list is updated and not overwritten.
+	Every `user_id` provided will be removed from the writers list.
+	`MakeUnpublic` is an optional boolean value.
+	If a boolean value is provided it will unmark the matched objects as public or not public accordingly.
+
+### Common Function Parameters
 
 - `User`
 	: A json object containing the fields `user_id` and `user_role`.
-- `Criteria`
-	: A MongoDB-like query specifying one or more objects.
-- `ManagedObject`
-	: A json object containing a `_m` field which stores object management information
-	and a `_o` field containing the application spelcific object data.
+
+- `CriteriaOrID` can be one of:
+	- If missing/undefined or null, then all objects are matched.
+	- A regular json object whose values are matched against the `_o` field of managed objects in storage.
+		This is a MongoDB-like object query to specify one or more objects.
+		See [json-criteria](guides/json-criteria.md) for more information.
+	- A string representing the value of `_m.id` to find in storage.
+	- A managed object with `_m` and/or `_o` fields.
+		If `_m` is present, then the value of `_m.id` will be matched.
+		If `_m` or `_m.id` is missing, then `_o` will be matched as a regular json object.
+
+- The `DataObject` parameter in the `WriteOne` function can be:
+	- A managed object with `_m` and/or `_o` fields.
+		If the `_o` field exists, it will be used to overwrite the `_o` field of the stored object.
+	- A json object that will be used to overwrite the `_o` field of the stored object.
+
 
 Notices
 ---------------------------------------------------------------------
