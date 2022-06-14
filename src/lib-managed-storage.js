@@ -45,6 +45,7 @@ LIB_MANAGED_STORAGE.DefaultConfiguration =
 				database_name: '/path/to/store/collections',
 				flush_on_update: false,
 				flush_every_ms: 0,
+				clear_collection_on_start: false,
 			},
 		};
 	};
@@ -385,7 +386,7 @@ LIB_MANAGED_STORAGE.NewManagedStorage =
 						if ( StorageConfiguration.throw_permission_errors ) { throw LIB_UTILS.WRITE_ACCESS_ERROR(); }
 						else { return 0; }
 					}
-					return await storage_provider.DeleteOne( _ObjectIDCriteria( found_object ) );
+					return await storage_provider.DeleteOne( _ManagedCriteria( User, found_object ) );
 				}
 				catch ( error )
 				{
