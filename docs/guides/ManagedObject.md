@@ -24,17 +24,27 @@ Managed Object Structure
 		- `_m.created_at`: The creation timestamp (zulu).
 		- `_m.updated_at`: The modification timestamp (zulu).
 		- `_m.owner_id`: The `User.user_id` of the object's owner.
-		- `_m.partners`: Array of `User.user_id`s that have access to this object.
+		- `_m.readers`: Array of `User.user_id`s that have read access to this object.
+		- `_m.writers`: Array of `User.user_id`s that have read/write access to this object.
 		- `_m.public`: Boolean flag marking this object as public.
-	- `_o` to store application object data. This structure is application defined via the `ObjectDefinition` structure.
+	- `_o` to store application object data.
+		This structure is defined by the application via the `ObjectDefinition` structure.
 
 
 User Objects
 ---------------------------------------------------------------------
 
-A `User` object must have the `user_id` and `user_role` fields and is used by all of the storage interface functions.
+A `User` object must have the `user_id` and `user_role` fields and is used as the first parameter to all of the storage interface functions.
 
-The `User.user_id` field is a string identifier which uniquely identifies a user (e.g. an email address).
+Example user object:
+```javascript
+let Alice = {
+	user_id: 'alice@fake.com',
+	user_role: 'admin'
+};
+```
+
+The `User.user_id` field must be a string value which uniquely identifies a user (e.g. an email address).
 
 The `User.user_role` field can be one of:
 - `'admin'`: A role that permits system-wide access to objects, regardless of ownership.
