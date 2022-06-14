@@ -1,5 +1,5 @@
 # lib-managed-storage
-***(v0.0.14)***
+***(v0.0.15)***
 
 A storage engine for managed objects. Tracks object identity, ownership, and permissions.
 
