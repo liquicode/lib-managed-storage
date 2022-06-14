@@ -8,8 +8,8 @@ const LIB_UTILITY = require( '../lib-utils.js' );
 
 
 //---------------------------------------------------------------------
-exports.NewMongoDbProvider =
-	function NewMongoDbProvider( Configuration )
+exports.NewMongoProvider =
+	function NewMongoProvider( Configuration )
 	{
 		let storage_provider = {};
 

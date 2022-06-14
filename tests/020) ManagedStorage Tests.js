@@ -29,7 +29,7 @@ describe( `020) ManagedStorage Tests`,
 		let test_object_count = 1000;
 		let managed_config = {
 			throws_permission_errors: false, // Disable permission errors for testing.
-			memory: {
+			json_provider: {
 				enabled: true,
 				collection_name: 'test-objects',
 				database_name: LIB_PATH.join( __dirname, '~temp' ),

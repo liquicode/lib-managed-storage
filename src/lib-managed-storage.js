@@ -32,20 +32,20 @@ LIB_MANAGED_STORAGE.DefaultConfiguration =
 			// Managed Storage Configuration
 			throw_permission_errors: false,
 			// MongoDB Provider Configuration
-			mongodb: {
+			mongo_provider: {
 				enabled: false,
 				collection_name: 'Collection-Name',
 				database_name: 'Database-Name',
 				connection_string: 'mongodb://<username>:<password>@<server-address',
 			},
 			// Json Provider Configuration
-			json: {
+			json_provider: {
 				enabled: false,
 				collection_name: 'Collection-Name',
 				database_name: '/path/to/store/collections',
+				clear_collection_on_start: false,
 				flush_on_update: false,
 				flush_every_ms: 0,
-				clear_collection_on_start: false,
 			},
 		};
 	};
@@ -118,13 +118,13 @@ LIB_MANAGED_STORAGE.NewManagedStorage =
 
 		// Get the storage provider.
 		let storage_provider = null;
-		if ( StorageConfiguration.mongodb && StorageConfiguration.mongodb.enabled )
+		if ( StorageConfiguration.mongo_provider && StorageConfiguration.mongo_provider.enabled )
 		{
-			storage_provider = LIB_MONGO_PROVIDER.NewMongoProvider( StorageConfiguration.mongodb );
+			storage_provider = LIB_MONGO_PROVIDER.NewMongoProvider( StorageConfiguration.mongo_provider );
 		}
-		else if ( StorageConfiguration.json && StorageConfiguration.json.enabled )
+		else if ( StorageConfiguration.json_provider && StorageConfiguration.json_provider.enabled )
 		{
-			storage_provider = LIB_JSON_PROVIDER.NewJsonProvider( StorageConfiguration.json );
+			storage_provider = LIB_JSON_PROVIDER.NewJsonProvider( StorageConfiguration.json_provider );
 		}
 		else
 		{
