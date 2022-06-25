@@ -66,7 +66,7 @@ LIB_MANAGED_STORAGE.StorageAdministrator =
 			user_role: 'admin',
 		};
 	};
-exports.DefaultConfiguration = LIB_MANAGED_STORAGE.DefaultConfiguration;
+exports.StorageAdministrator = LIB_MANAGED_STORAGE.StorageAdministrator;
 
 
 //=====================================================================
