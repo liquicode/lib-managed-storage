@@ -58,7 +58,7 @@
       ✓ Should not allow readers to update documents
 
 
-  32 passing (40s)
+  32 passing (39s)
 
 
 ```
