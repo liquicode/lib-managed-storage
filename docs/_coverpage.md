@@ -2,7 +2,7 @@
 
 ![logo](media/template-lib-banner-large.png)
 
-# lib-managed-storage <small>(v0.0.16)</small>
+# lib-managed-storage <small>(v0.0.17)</small>
 
 <hr>
 
