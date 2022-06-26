@@ -39,5 +39,15 @@
 				"--test",
 			],
 		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Run 910",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"program": "${workspaceFolder}/build/custom/910-release-version.js",
+			"cwd": "${workspaceFolder}",
+		},
 	]
 }

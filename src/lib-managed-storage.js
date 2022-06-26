@@ -208,12 +208,18 @@ LIB_MANAGED_STORAGE.NewManagedStorage =
 					{
 						if ( !LIB_UTILS.value_missing_null_empty( ObjectOrID._o ) )
 						{
-							criteria._o = LIB_UTILS.clone( ObjectOrID._o ); // match _o with the proviuded values.
+							if ( Object.keys( ObjectOrID._o ).length > 0 )
+							{
+								criteria._o = LIB_UTILS.clone( ObjectOrID._o ); // match _o with the provided values.
+							}
 						}
 						else
 						{
-							criteria._o = LIB_UTILS.clone( ObjectOrID ); // match _o with the proviuded values.
-							delete criteria._o._m;
+							if ( Object.keys( ObjectOrID ).length > 0 )
+							{
+								criteria._o = LIB_UTILS.clone( ObjectOrID ); // match _o with the provided values.
+								delete criteria._o._m;
+							}
 						}
 					}
 				}
