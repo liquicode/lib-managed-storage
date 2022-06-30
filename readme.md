@@ -21,6 +21,13 @@ A storage engine for managed objects. Tracks object identity, ownership, and per
 ```
 
 
+**NOTE: This project has been superceded by the newer project [lib-user-storage](https://github.com/liquicode/lib-user-storage).**
+Primary changes are:
+- The `_m` field of storage objects, containing the object metadata and ownership information,
+	 is now configurable and can be given any valid javascript name.
+- The `_o` field has been removed. Storage objects are now treated as plain javascript objects
+
+
 Getting Started
 ---------------------------------------------------------------------
 
